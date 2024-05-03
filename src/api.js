@@ -12,8 +12,29 @@ const api = {
   },
 
   getAllAppUsers: async () => {
-    const response = await fetch(`${BASE_URL}/appuser`);
-    return response.json()
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Utilisateur non connecté');
+      }
+      
+      const response = await fetch(`${BASE_URL}/appuser`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des utilisateurs de l\'application');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des utilisateurs de l\'application:', error);
+      throw error;
+    }
   },
 
   getAllBands: async () => {
@@ -33,7 +54,8 @@ const api = {
       throw new Error('Nom d\'utilisateur ou mot de passe incorrect');
     }
     console.log('connexion ok');
-    return response.json();
+    const data = await response.json();
+    return data;
   },
 
 };
