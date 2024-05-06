@@ -17,7 +17,7 @@ const navigate = useNavigate();
       // Stockez le token côté client
       localStorage.setItem('token', response.token);
       // Utilisez history.push pour rediriger l'utilisateur vers la page de festival
-      navigate('/festival');
+      navigate('/user');
     } catch (error) {
       console.error('Erreur de connexion :', error);
       // Gérez les erreurs de connexion
