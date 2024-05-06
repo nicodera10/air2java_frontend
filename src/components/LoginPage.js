@@ -2,25 +2,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
+import Cookies from 'js-cookie'; // Importez la bibliothèque js-cookie
 
 const LoginPage = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-// Initialisez navigate en utilisant le hook useNavigate
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      // Appelez votre API pour vérifier les informations de connexion
       const response = await api.login(username, password);
-      // Stockez le token côté client
-      localStorage.setItem('token', response.token);
-      // Utilisez history.push pour rediriger l'utilisateur vers la page de festival
+      // Stockez le token en tant que cookie avec une durée de validité
+      Cookies.set('token', response.token, { expires: 7 }); // Exemple : le cookie expire après 7 jours
       navigate('/user');
     } catch (error) {
       console.error('Erreur de connexion :', error);
-      // Gérez les erreurs de connexion
     }
   };
 

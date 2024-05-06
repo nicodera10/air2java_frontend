@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api';
+import Cookies from 'js-cookie'; // Importez la bibliothèque js-cookie
 
 const UserPage = () => {
   const [appusers, setAppusers] = useState([]);
@@ -22,14 +23,14 @@ const UserPage = () => {
   };
 
   const checkLoggedIn = () => {
-    // Vérifier si l'utilisateur est connecté en vérifiant la présence du token dans le localStorage
-    const token = localStorage.getItem('token');
+    // Vérifier si l'utilisateur est connecté en vérifiant la présence du token dans les cookies
+    const token = Cookies.get('token'); // Utilisez Cookies.get() pour récupérer le token
     setIsLoggedIn(!!token); // Met à jour l'état isLoggedIn en fonction de la présence du token
   };
 
   const handleLogout = () => {
-    // Supprimer le token du localStorage
-    localStorage.removeItem('token');
+    // Supprimer le token des cookies
+    Cookies.remove('token');
     // Rediriger vers la page de connexion
     window.location.href = '/';
   };

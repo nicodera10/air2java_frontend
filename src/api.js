@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie'; // Importez la bibliothèque js-cookie
+
 const BASE_URL = 'http://localhost:3000';
 
 const api = {
@@ -13,7 +15,7 @@ const api = {
 
   getAllAppUsers: async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = Cookies.get('token'); // Utilisez Cookies.get() pour récupérer le token
       if (!token) {
         throw new Error('Utilisateur non connecté');
       }
