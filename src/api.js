@@ -1,28 +1,26 @@
+//loiacono_nicolas_adj_front/src/api.js
 const BASE_URL = 'https://localhost:443';
 
 const api = {
+
   getAllPersons: async () => {
     const response = await fetch(`${BASE_URL}/person`);
-    return response.json()
+    return response.json();
   },
 
   getAllFestivals: async () => {
     const response = await fetch(`${BASE_URL}/festival`);
-    return response.json()
+    return response.json();
   },
 
   getAllAppUsers: async () => {
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('Utilisateur non connecté');
-      }
-      
+      // Pas de manipulation du cookie, laissé au client pour gérer
       const response = await fetch(`${BASE_URL}/appuser`, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
         },
+        credentials: 'include',
       });
 
       if (!response.ok) {
@@ -39,7 +37,7 @@ const api = {
 
   getAllBands: async () => {
     const response = await fetch(`${BASE_URL}/band`);
-    return response.json()
+    return response.json();
   },
 
   login: async (username, password) => {
@@ -53,11 +51,9 @@ const api = {
     if (!response.ok) {
       throw new Error('Nom d\'utilisateur ou mot de passe incorrect');
     }
-    console.log('connexion ok');
     const data = await response.json();
     return data;
   },
-
 };
 
 export default api;

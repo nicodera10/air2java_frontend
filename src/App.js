@@ -1,4 +1,4 @@
-// src/App.js
+//loiacono_nicolas_adj_front/src/App.js
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import UserPage from './components/UserPage';
@@ -9,7 +9,7 @@ import LoginPage from './components/LoginPage';
 import ConnexionApprouvedPage from './components/ConnexionApprouvedPage';
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [setUser] = useState(null);
 
   const handleLogin = (userData) => {
     setUser(userData);
