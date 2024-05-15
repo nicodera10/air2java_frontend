@@ -19,12 +19,20 @@ const PersonPage = () => {
     fetchData();
   }, []);
 
+  const handleLogout = () => {
+    // Supprimer le cookie
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;';
+    // Rediriger vers la page de connexion
+    window.location.href = '/';
+  };
+
   return (
     <div>
       <h1>Liste des personnes</h1>
       <Link to="/user">Voir les users</Link><br />
       <Link to="/festival">Voir les festivals</Link><br />
       <Link to="/band">Voir les bands</Link>
+      <button onClick={handleLogout}>Déconnexion</button>
       <ul>
         {persons.map(person => (
           <li key={person.id_person}>
@@ -35,7 +43,6 @@ const PersonPage = () => {
             <p>Téléphone: {person.phone}</p>
             <p>Email: {person.email}</p>
             <p>Date de naissance: {person.birthdate}</p>
-            {/* Ajoutez d'autres champs si nécessaire */}
           </li>
         ))}
       </ul>

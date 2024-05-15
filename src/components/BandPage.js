@@ -19,12 +19,21 @@ const BandPage = () => {
     fetchData();
   }, []);
 
+  const handleLogout = () => {
+    // Supprimer le cookie
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;';
+    // Rediriger vers la page de connexion
+    window.location.href = '/';
+  };
+
   return (
     <div>
       <h1>Liste des personnes</h1>
       <Link to="/user">Voir les users</Link><br />
       <Link to="/festival">Voir les festivals</Link><br />
       <Link to="/person">Voir les persons</Link>
+      <button onClick={handleLogout}>Déconnexion</button>
+
       <ul>
         {bands.map(band => (
           <li key={band.id}>

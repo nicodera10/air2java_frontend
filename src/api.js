@@ -1,30 +1,37 @@
-import Cookies from 'js-cookie'; // Importez la bibliothèque js-cookie
-
-const BASE_URL = 'http://localhost:3000';
+//loiacono_nicolas_adj_front/src/api.js
+const BASE_URL = 'https://localhost:443';
 
 const api = {
+
   getAllPersons: async () => {
-    const response = await fetch(`${BASE_URL}/person`);
-    return response.json()
+    const response = await fetch(`${BASE_URL}/person`, {
+      credentials: 'include'
+    });
+    return response.json();
   },
 
   getAllFestivals: async () => {
-    const response = await fetch(`${BASE_URL}/festival`);
-    return response.json()
+    const response = await fetch(`${BASE_URL}/festival`, {
+      credentials: 'include'
+    });
+    return response.json();
+  },
+
+  getLatestFestivals: async () => {
+    const response = await fetch(`${BASE_URL}/festival/latest`, {
+      credentials: 'include'
+    });
+    return response.json();
   },
 
   getAllAppUsers: async () => {
     try {
-      const token = Cookies.get('token'); // Utilisez Cookies.get() pour récupérer le token
-      if (!token) {
-        throw new Error('Utilisateur non connecté');
-      }
-      
+      // Pas de manipulation du cookie, laissé au client pour gérer
       const response = await fetch(`${BASE_URL}/appuser`, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
         },
+        credentials: 'include',
       });
 
       if (!response.ok) {
@@ -40,8 +47,10 @@ const api = {
   },
 
   getAllBands: async () => {
-    const response = await fetch(`${BASE_URL}/band`);
-    return response.json()
+    const response = await fetch(`${BASE_URL}/band`, {
+      credentials: 'include'
+    });
+    return response.json();
   },
 
   login: async (username, password) => {
@@ -51,15 +60,14 @@ const api = {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ username, password }),
+      credentials: 'include', // Ajout de l'option credentials
     });
     if (!response.ok) {
       throw new Error('Nom d\'utilisateur ou mot de passe incorrect');
     }
-    console.log('connexion ok');
     const data = await response.json();
     return data;
   },
-
 };
 
 export default api;

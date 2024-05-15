@@ -1,10 +1,10 @@
-// src/components/PersonPage.js
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api';
 
 const FestivalPage = () => {
   const [festivals, setFestivals] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(''); // État pour stocker la valeur de recherche
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,14 +19,43 @@ const FestivalPage = () => {
     fetchData();
   }, []);
 
+  // Fonction de gestion pour mettre à jour l'état de la recherche
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // Filtrer les festivals en fonction de la valeur de recherche
+  const filteredFestivals = festivals.filter(festival => {
+    return festival.name_fest.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
+  const handleLogout = () => {
+    // Supprimer le cookie
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;';
+    // Rediriger vers la page de connexion
+    window.location.href = '/';
+  };
+
   return (
     <div>
       <h1>Liste des festivals</h1>
-      <Link to="/user">Voir les users</Link><br />
-      <Link to="/person">Voir les persons</Link><br />
-      <Link to="/band">Voir les bands</Link>
+      <Link to="/user">Voir les utilisateurs</Link><br />
+      <Link to="/person">Voir les personnes</Link><br />
+      <Link to="/band">Voir les groupes</Link><br />
+
+      {/* Barre de recherche */}
+      <input
+        type="text"
+        placeholder="Rechercher un festival"
+        value={searchTerm}
+        onChange={handleSearchChange}
+      />
+
+      <button onClick={handleLogout}>Déconnexion</button>
+
       <ul>
-        {festivals.map(festival => (
+        {/* Affichage des festivals filtrés */}
+        {filteredFestivals.map(festival => (
           <li key={festival.id_fest}>
             <p>Nom du festival: {festival.name_fest}</p>
             <p>Emplacement: {festival.location_fest}</p>
