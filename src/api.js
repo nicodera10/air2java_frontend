@@ -17,6 +17,13 @@ const api = {
     return response.json();
   },
 
+  getLatestFestivals: async () => {
+    const response = await fetch(`${BASE_URL}/festival/latest`, {
+      credentials: 'include'
+    });
+    return response.json();
+  },
+
   getAllAppUsers: async () => {
     try {
       // Pas de manipulation du cookie, laissé au client pour gérer

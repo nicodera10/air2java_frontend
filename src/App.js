@@ -7,6 +7,7 @@ import BandPage from './components/BandPage';
 import PersonPage from './components/PersonPage';
 import LoginPage from './components/LoginPage';
 import ConnexionApprouvedPage from './components/ConnexionApprouvedPage';
+import HomePage from './components/HomePage';
 
 function App() {
   const [setUser] = useState(null);
@@ -26,9 +27,10 @@ function App() {
               <Route path="/band" element={<BandPage />} />
               <Route path="/person" element={<PersonPage />} />
               <Route path="/connexionapprouved" element={<ConnexionApprouvedPage />} />
+              <Route path="/" element={<HomePage />} />
             </>
           
-            <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
+            <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
           
         </Routes>
       </div>
