@@ -4,12 +4,16 @@ const BASE_URL = 'https://localhost:443';
 const api = {
 
   getAllPersons: async () => {
-    const response = await fetch(`${BASE_URL}/person`);
+    const response = await fetch(`${BASE_URL}/person`, {
+      credentials: 'include'
+    });
     return response.json();
   },
 
   getAllFestivals: async () => {
-    const response = await fetch(`${BASE_URL}/festival`);
+    const response = await fetch(`${BASE_URL}/festival`, {
+      credentials: 'include'
+    });
     return response.json();
   },
 
@@ -36,7 +40,9 @@ const api = {
   },
 
   getAllBands: async () => {
-    const response = await fetch(`${BASE_URL}/band`);
+    const response = await fetch(`${BASE_URL}/band`, {
+      credentials: 'include'
+    });
     return response.json();
   },
 
@@ -47,6 +53,7 @@ const api = {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ username, password }),
+      credentials: 'include', // Ajout de l'option credentials
     });
     if (!response.ok) {
       throw new Error('Nom d\'utilisateur ou mot de passe incorrect');
