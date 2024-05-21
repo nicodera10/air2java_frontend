@@ -47,6 +47,23 @@ const api = {
     }
   },
 
+  createAppUser: async (user) => {
+    const response = await fetch(`${BASE_URL}/appuser`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+      credentials: 'include'
+    });
+
+    if (!response.ok) {
+      throw new Error('Erreur lors de la création de l\'utilisateur');
+    }
+
+    return response.json();
+  },
+
   getAllBands: async () => {
     const response = await fetch(`${BASE_URL}/band`, {
       credentials: 'include'
