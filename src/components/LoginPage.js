@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
-import Cookies from 'js-cookie'; // Importez la bibliothèque js-cookie
 
 const LoginPage = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -17,6 +16,7 @@ const LoginPage = ({ onLogin }) => {
       const response = await api.login(username, password);
       // Stockez le userName côté client
       localStorage.setItem('userName', response.userName);
+      localStorage.setItem('userType', response.userType)
       // Utilisez navigate pour rediriger l'utilisateur vers la page de festival
       navigate('/connexionapprouved');
     } catch (error) {

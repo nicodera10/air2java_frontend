@@ -1,12 +1,16 @@
-// src/components/PersonPage.js
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api';
 
 const BandPage = () => {
   const [bands, setBands] = useState([]);
+  const [userType, setUserType] = useState('');
 
   useEffect(() => {
+    // Récupération du userType de localStorage
+    const storedUserType = localStorage.getItem('userType');
+    setUserType(storedUserType);
+
     const fetchData = async () => {
       try {
         const data = await api.getAllBands();
@@ -19,19 +23,20 @@ const BandPage = () => {
     fetchData();
   }, []);
 
-  const handleLogout = () => {
-    // Supprimer le cookie
-    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;';
-    // Rediriger vers la page de connexion
-    window.location.href = '/';
+  const handleLogout = async () => {
+    try {
+      await api.logout();
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
   };
 
   return (
     <div>
-      <h1>Liste des personnes</h1>
-      <Link to="/user">Voir les users</Link><br />
+      <h1>Liste des groupes</h1>
+      {userType === 'admin' && <Link to="/user">Voir les utilisateurs</Link>}<br />
       <Link to="/festival">Voir les festivals</Link><br />
-      <Link to="/person">Voir les persons</Link>
+      <Link to="/person">Voir les personnes</Link>
       <button onClick={handleLogout}>Déconnexion</button>
 
       <ul>
@@ -43,6 +48,6 @@ const BandPage = () => {
       </ul>
     </div>
   );
-}
+};
 
 export default BandPage;

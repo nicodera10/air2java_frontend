@@ -5,8 +5,11 @@ import api from '../api';
 const FestivalPage = () => {
   const [festivals, setFestivals] = useState([]);
   const [searchTerm, setSearchTerm] = useState(''); // État pour stocker la valeur de recherche
+  const [userType, setUserType] = useState('');
 
   useEffect(() => {
+    const storedUserType = localStorage.getItem('userType');
+    setUserType(storedUserType);
     const fetchData = async () => {
       try {
         const data = await api.getAllFestivals();
@@ -29,17 +32,18 @@ const FestivalPage = () => {
     return festival.name_fest.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
-  const handleLogout = () => {
-    // Supprimer le cookie
-    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;';
-    // Rediriger vers la page de connexion
-    window.location.href = '/';
-  };
+  const handleLogout = async () => {
+    try {
+        await api.logout();
+    } catch (error) {
+        console.error('Error logging out:', error);
+    }
+};
 
   return (
     <div>
       <h1>Liste des festivals</h1>
-      <Link to="/user">Voir les utilisateurs</Link><br />
+      {userType === 'admin' && <Link to="/user">Voir les utilisateurs</Link>}<br />
       <Link to="/person">Voir les personnes</Link><br />
       <Link to="/band">Voir les groupes</Link><br />
 

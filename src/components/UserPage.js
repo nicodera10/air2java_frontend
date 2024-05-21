@@ -2,15 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api';
-import Cookies from 'js-cookie'; // Importez la bibliothèque js-cookie
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 const UserPage = () => {
   const [appusers, setAppusers] = useState([]);
-  //const [isLoggedIn, setIsLoggedIn] = useState(false); // État pour suivre l'authentification de l'utilisateur
 
   useEffect(() => {
     fetchData();
-    //checkLoggedIn();
   }, []);
 
   const fetchData = async () => {
@@ -23,12 +23,14 @@ const UserPage = () => {
   };
 
 
-  const handleLogout = () => {
-    // Supprimer le cookie
-    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;';
-    // Rediriger vers la page de connexion
-    window.location.href = '/';
-  };
+  const handleLogout = async () => {
+    try {
+        await api.logout();
+    } catch (error) {
+        console.error('Error logging out:', error);
+    }
+};
+
 
   return (
     <div>

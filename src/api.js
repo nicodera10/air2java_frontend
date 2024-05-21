@@ -26,10 +26,11 @@ const api = {
 
   getAllAppUsers: async () => {
     try {
-      // Pas de manipulation du cookie, laissé au client pour gérer
+      const userType = localStorage.getItem('userType');
       const response = await fetch(`${BASE_URL}/appuser`, {
         headers: {
           'Content-Type': 'application/json',
+          'User-Type': userType,
         },
         credentials: 'include',
       });
@@ -68,6 +69,18 @@ const api = {
     const data = await response.json();
     return data;
   },
+
+  logout: async () => {
+    try {
+      await fetch(`${BASE_URL}/auth/logout`, {
+          method: 'POST',
+          credentials: 'include'
+      });
+      window.location.href = '/';
+  } catch (error) {
+      console.error('Error logging out:', error);
+  }
+  }
 };
 
 export default api;
