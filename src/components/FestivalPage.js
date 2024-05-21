@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../api';
 
 const FestivalPage = () => {
   const [festivals, setFestivals] = useState([]);
   const [searchTerm, setSearchTerm] = useState(''); // État pour stocker la valeur de recherche
   const [userType, setUserType] = useState('');
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const storedUserType = localStorage.getItem('userType');
@@ -34,11 +36,15 @@ const FestivalPage = () => {
 
   const handleLogout = async () => {
     try {
-        await api.logout();
+      await api.logout();
+      console.log('déco ok');
+      localStorage.removeItem('userType');
+      localStorage.removeItem('userName');
+      navigate('/login');
     } catch (error) {
-        console.error('Error logging out:', error);
+      console.error('Error logging out:', error);
     }
-};
+  };
 
   return (
     <div>

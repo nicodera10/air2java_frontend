@@ -90,13 +90,12 @@ const api = {
   logout: async () => {
     try {
       await fetch(`${BASE_URL}/auth/logout`, {
-          method: 'POST',
-          credentials: 'include'
+        method: 'POST',
+        credentials: 'include'
       });
-      window.location.href = '/';
-  } catch (error) {
+    } catch (error) {
       console.error('Error logging out:', error);
-  }
+    }
   }
 };
 
