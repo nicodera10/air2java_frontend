@@ -41,8 +41,6 @@ const PersonPage = () => {
     <div>
       <h1>Liste des personnes</h1>
       {userType === 'admin' && <Link to="/user">Voir les utilisateurs</Link>}<br />
-      <Link to="/festival">Voir les festivals</Link><br />
-      <Link to="/band">Voir les bands</Link>
       <button onClick={handleLogout}>Déconnexion</button>
       <ul>
         {persons.map(person => (

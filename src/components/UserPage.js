@@ -1,4 +1,3 @@
-//loiacono_nicolas_adj_front/src/components/UserPage.js
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api';
@@ -72,37 +71,25 @@ const UserPage = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Liste des appusers</h1>
       <button onClick={handleOpenModal}>Ajouter un utilisateur</button>
-      <Link to="/person">Voir les personnes</Link><br />
-      <Link to="/festival">Voir les festivals</Link><br />
-      <Link to="/band">Voir les groupes</Link>
       <button onClick={handleLogout}>Déconnexion</button>
-      <ul>
+      <div>
         {appusers.map(appuser => (
-          <li key={appuser.id_appuser}>
-            <p>ID de l'utilisateur : {appuser.id_appuser}</p>
-            <p>Nom de l'utilisateur : {appuser.name}</p>
-            <p>Type : {appuser.type}</p>
-          </li>
+          <div className="card" key={appuser.id_appuser}>
+            <p><strong>ID de l'utilisateur :</strong> {appuser.id_appuser}</p>
+            <p><strong>Nom de l'utilisateur :</strong> {appuser.name}</p>
+            <p><strong>Type :</strong> {appuser.type}</p>
+          </div>
         ))}
-      </ul>
+      </div>
 
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={handleCloseModal}
         contentLabel="Ajouter un utilisateur"
-        style={{
-          content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)'
-          }
-        }}
+        style={{ content: { top: '50%', left: '50%', right: 'auto', bottom: 'auto', marginRight: '-50%', transform: 'translate(-50%, -50%)' } }}
       >
         <h2>Ajouter un utilisateur</h2>
         <form onSubmit={handleSubmit}>

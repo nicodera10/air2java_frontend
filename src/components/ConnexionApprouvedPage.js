@@ -34,10 +34,6 @@ const ConnexionApprouvedPage = () => {
     <div>
       <h1>Connexion réussie</h1>
       <p>Bienvenue, {userName} !</p>
-      {userType === 'admin' && <Link to="/user">Voir les utilisateurs</Link>}<br />
-      <Link to="/festival">Voir les festivals</Link><br />
-      <Link to="/person">Voir les personnes</Link><br />
-      <Link to="/band">Voir les groupes</Link>
       <button onClick={handleLogout}>Déconnexion</button>
     </div>
   );

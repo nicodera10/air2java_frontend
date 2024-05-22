@@ -1,6 +1,6 @@
 //loiacono_nicolas_adj_front/src/components/LoginPage.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import api from '../api';
 
 const LoginPage = ({ onLogin }) => {
@@ -27,6 +27,7 @@ const LoginPage = ({ onLogin }) => {
 
   return (
     <div>
+      <Link to="/">Page d'accueil</Link><br />
       <h2>Connexion</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>} {/* Affichage de l'erreur */}
       <form onSubmit={handleLogin}>

@@ -39,9 +39,6 @@ const BandPage = () => {
   return (
     <div>
       <h1>Liste des groupes</h1>
-      {userType === 'admin' && <Link to="/user">Voir les utilisateurs</Link>}<br />
-      <Link to="/festival">Voir les festivals</Link><br />
-      <Link to="/person">Voir les personnes</Link>
       <button onClick={handleLogout}>Déconnexion</button>
 
       <ul>

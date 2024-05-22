@@ -49,9 +49,6 @@ const FestivalPage = () => {
   return (
     <div>
       <h1>Liste des festivals</h1>
-      {userType === 'admin' && <Link to="/user">Voir les utilisateurs</Link>}<br />
-      <Link to="/person">Voir les personnes</Link><br />
-      <Link to="/band">Voir les groupes</Link><br />
 
       {/* Barre de recherche */}
       <input

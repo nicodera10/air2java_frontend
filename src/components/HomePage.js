@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../api';
+import Navbar from './Navbar';
 
 const HomePage = () => {
   const [festivals, setFestivals] = useState([]);
+  const isLoggedIn = localStorage.getItem('userName');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,10 +21,29 @@ const HomePage = () => {
     fetchData();
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await api.logout();
+      console.log('déco ok');
+      localStorage.removeItem('userType');
+      localStorage.removeItem('userName');
+      navigate('/login');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+
   return (
     <div>
       <h1>Air de Java</h1>
-      <Link to="/login">Se connecter</Link><br />
+      {!isLoggedIn ? (
+        <Link to="/login">Se connecter</Link>
+      ) : (
+        <div>
+          <Navbar />
+          <button onClick={handleLogout}>Déconnexion</button>
+        </div> // Affichez la navbar si l'utilisateur est connecté
+      )}
       <ul>
         {festivals.map(festival => (
           <li key={festival.id_fest}>
