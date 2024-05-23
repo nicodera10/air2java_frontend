@@ -1,4 +1,3 @@
-//loiacono_nicolas_adj_front/src/api.js
 const BASE_URL = 'https://localhost:443';
 
 const api = {
@@ -26,10 +25,11 @@ const api = {
 
   getAllAppUsers: async () => {
     try {
-      // Pas de manipulation du cookie, laissé au client pour gérer
+      const userType = localStorage.getItem('userType');
       const response = await fetch(`${BASE_URL}/appuser`, {
         headers: {
           'Content-Type': 'application/json',
+          'User-Type': userType,
         },
         credentials: 'include',
       });
@@ -44,6 +44,23 @@ const api = {
       console.error('Erreur lors de la récupération des utilisateurs de l\'application:', error);
       throw error;
     }
+  },
+
+  createAppUser: async (user) => {
+    const response = await fetch(`${BASE_URL}/appuser`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+      credentials: 'include'
+    });
+
+    if (!response.ok) {
+      throw new Error('Erreur lors de la création de l\'utilisateur');
+    }
+
+    return response.json();
   },
 
   getAllBands: async () => {
@@ -68,6 +85,17 @@ const api = {
     const data = await response.json();
     return data;
   },
+
+  logout: async () => {
+    try {
+      await fetch(`${BASE_URL}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  }
 };
 
 export default api;

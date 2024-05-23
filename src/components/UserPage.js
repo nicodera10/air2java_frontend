@@ -1,17 +1,28 @@
-//loiacono_nicolas_adj_front/src/components/UserPage.js
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import api from '../api';
-import Cookies from 'js-cookie'; // Importez la bibliothèque js-cookie
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 const UserPage = () => {
   const [appusers, setAppusers] = useState([]);
-  //const [isLoggedIn, setIsLoggedIn] = useState(false); // État pour suivre l'authentification de l'utilisateur
+  const navigate = useNavigate();
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [newUser, setNewUser] = useState({
+    name: '',
+    type: '',
+    password: ''
+  });
 
   useEffect(() => {
-    fetchData();
-    //checkLoggedIn();
-  }, []);
+    const userType = localStorage.getItem('userType');
+    if (!userType || userType !== 'admin') {
+      navigate('/login');
+    } else {
+      fetchData();
+    }
+  }, [navigate]);
 
   const fetchData = async () => {
     try {
@@ -22,46 +33,81 @@ const UserPage = () => {
     }
   };
 
-  /*const checkLoggedIn = () => {
-    // Vérifier si le cookie a été transmis
-    const cookies = document.cookie.split(';');
-    const hasCookie = cookies.some(cookie => cookie.trim().startsWith('token='));
-    setIsLoggedIn(hasCookie); // Mettre à jour l'état isLoggedIn en fonction de la présence du cookie
-  };*/
+  const handleLogout = async () => {
+    try {
+      await api.logout();
+      console.log('déco ok');
+      localStorage.removeItem('userType');
+      localStorage.removeItem('userName');
+      navigate('/login');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
 
-  const handleLogout = () => {
-    // Supprimer le cookie
-    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;';
-    // Rediriger vers la page de connexion
-    window.location.href = '/';
+  const handleOpenModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewUser({ ...newUser, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await api.createAppUser(newUser);
+      fetchData();
+      handleCloseModal();
+    } catch (error) {
+      console.error('Erreur lors de la création de l\'utilisateur:', error);
+    }
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Liste des appusers</h1>
-      
-        <>
-          <Link to="/person">Voir les persons</Link><br />
-          <Link to="/festival">Voir les festivals</Link><br />
-          <Link to="/band">Voir les bands</Link>
-          <button onClick={handleLogout}>Déconnexion</button>
-        </>
-      
-        <>
-          <Link to="/person">Voir les persons</Link><br />
-          <Link to="/festival">Voir les festivals</Link><br />
-          <Link to="/band">Voir les bands</Link>
-          <Link to="/">Connexion</Link>
-        </>
-      
-      <ul>
+      <button onClick={handleOpenModal}>Ajouter un utilisateur</button>
+      <button onClick={handleLogout}>Déconnexion</button>
+      <div>
         {appusers.map(appuser => (
-          <li key={appuser.id_appuser}>
-            <p>ID de l'utilisateur : {appuser.id_appuser}</p>
-            <p>Type : {appuser.type.name}</p>
-          </li>
+          <div className="card" key={appuser.id_appuser}>
+            <p><strong>ID de l'utilisateur :</strong> {appuser.id_appuser}</p>
+            <p><strong>Nom de l'utilisateur :</strong> {appuser.name}</p>
+            <p><strong>Type :</strong> {appuser.type}</p>
+          </div>
         ))}
-      </ul>
+      </div>
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={handleCloseModal}
+        contentLabel="Ajouter un utilisateur"
+        style={{ content: { top: '50%', left: '50%', right: 'auto', bottom: 'auto', marginRight: '-50%', transform: 'translate(-50%, -50%)' } }}
+      >
+        <h2>Ajouter un utilisateur</h2>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Nom :</label>
+            <input type="text" name="name" value={newUser.name} onChange={handleInputChange} />
+          </div>
+          <div>
+            <label>Type :</label>
+            <input type="text" name="type" value={newUser.type} onChange={handleInputChange} />
+          </div>
+          <div>
+            <label>Mot de passe :</label>
+            <input type="password" name="password" value={newUser.password} onChange={handleInputChange} />
+          </div>
+          <button type="submit">Ajouter</button>
+          <button type="button" onClick={handleCloseModal}>Annuler</button>
+        </form>
+      </Modal>
     </div>
   );
 }

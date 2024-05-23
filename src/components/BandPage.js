@@ -1,12 +1,16 @@
-// src/components/PersonPage.js
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import api from '../api';
 
 const BandPage = () => {
   const [bands, setBands] = useState([]);
+  const [userType, setUserType] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const storedUserType = localStorage.getItem('userType');
+    setUserType(storedUserType);
+
     const fetchData = async () => {
       try {
         const data = await api.getAllBands();
@@ -19,12 +23,23 @@ const BandPage = () => {
     fetchData();
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await api.logout();
+      console.log('déco ok');
+      localStorage.removeItem('userType');
+      localStorage.removeItem('userName');
+      navigate('/login');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+
   return (
     <div>
-      <h1>Liste des personnes</h1>
-      <Link to="/user">Voir les users</Link><br />
-      <Link to="/festival">Voir les festivals</Link><br />
-      <Link to="/person">Voir les persons</Link>
+      <h1>Liste des groupes</h1>
+      <button onClick={handleLogout}>Déconnexion</button>
+
       <ul>
         {bands.map(band => (
           <li key={band.id}>
@@ -34,6 +49,6 @@ const BandPage = () => {
       </ul>
     </div>
   );
-}
+};
 
 export default BandPage;

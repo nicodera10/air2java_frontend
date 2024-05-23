@@ -1,12 +1,17 @@
-// src/components/PersonPage.js
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../api';
 
 const PersonPage = () => {
   const [persons, setPersons] = useState([]);
+  const [userType, setUserType] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
+
+    const storedUserType = localStorage.getItem('userType');
+    setUserType(storedUserType);
+
     const fetchData = async () => {
       try {
         const data = await api.getAllPersons();
@@ -19,12 +24,23 @@ const PersonPage = () => {
     fetchData();
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await api.logout();
+      console.log('déco ok');
+      localStorage.removeItem('userType');
+      localStorage.removeItem('userName');
+      navigate('/login');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+
   return (
     <div>
       <h1>Liste des personnes</h1>
-      <Link to="/user">Voir les users</Link><br />
-      <Link to="/festival">Voir les festivals</Link><br />
-      <Link to="/band">Voir les bands</Link>
+      {userType === 'admin' && <Link to="/user">Voir les utilisateurs</Link>}<br />
+      <button onClick={handleLogout}>Déconnexion</button>
       <ul>
         {persons.map(person => (
           <li key={person.id_person}>
@@ -35,7 +51,6 @@ const PersonPage = () => {
             <p>Téléphone: {person.phone}</p>
             <p>Email: {person.email}</p>
             <p>Date de naissance: {person.birthdate}</p>
-            {/* Ajoutez d'autres champs si nécessaire */}
           </li>
         ))}
       </ul>

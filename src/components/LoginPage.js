@@ -1,34 +1,31 @@
-//loiacono_nicolas_adj_front/src/components/LoginPage.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import api from '../api';
-import Cookies from 'js-cookie'; // Importez la bibliothèque js-cookie
 
 const LoginPage = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(''); // Ajout de l'état pour stocker les erreurs
-  // Initialisez navigate en utilisant le hook useNavigate
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await api.login(username, password);
-      // Stockez le userName côté client
       localStorage.setItem('userName', response.userName);
-      // Utilisez navigate pour rediriger l'utilisateur vers la page de festival
+      localStorage.setItem('userType', response.userType)
       navigate('/connexionapprouved');
     } catch (error) {
       console.error('Erreur de connexion :', error);
-      setError('Nom d\'utilisateur ou mot de passe incorrect'); // Affichage de l'erreur
+      setError('Nom d\'utilisateur ou mot de passe incorrect');
     }
   };
 
   return (
     <div>
+      <Link to="/">Page d'accueil</Link><br />
       <h2>Connexion</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>} {/* Affichage de l'erreur */}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleLogin}>
         <div>
           <label>Nom d'utilisateur :</label>
