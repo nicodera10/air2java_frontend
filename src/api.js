@@ -1,4 +1,3 @@
-//loiacono_nicolas_adj_front/src/api.js
 const BASE_URL = 'https://localhost:443';
 
 const api = {

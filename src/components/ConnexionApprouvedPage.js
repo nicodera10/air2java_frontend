@@ -1,6 +1,5 @@
-//loiacono_nicolas_adj_front/src/components/ConnexionApprouvedPage.js
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import api from '../api';
 
 const ConnexionApprouvedPage = () => {
@@ -9,7 +8,6 @@ const ConnexionApprouvedPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Récupération du nom d'utilisateur depuis le localStorage
     const storedUserType = localStorage.getItem('userType');
     setUserType(storedUserType);
     const storedUserName = localStorage.getItem('userName');

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import api from '../api';
 
 const BandPage = () => {
@@ -8,7 +8,6 @@ const BandPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Récupération du userType de localStorage
     const storedUserType = localStorage.getItem('userType');
     setUserType(storedUserType);
 

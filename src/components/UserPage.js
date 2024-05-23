@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import Modal from 'react-modal';
 
-Modal.setAppElement('#root'); // Pour accessibilité
+Modal.setAppElement('#root');
 
 const UserPage = () => {
   const [appusers, setAppusers] = useState([]);
@@ -18,7 +18,6 @@ const UserPage = () => {
   useEffect(() => {
     const userType = localStorage.getItem('userType');
     if (!userType || userType !== 'admin') {
-      // Rediriger l'utilisateur s'il n'est pas un administrateur
       navigate('/login');
     } else {
       fetchData();
@@ -62,8 +61,8 @@ const UserPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.createAppUser(newUser); // Assurez-vous d'ajouter cette méthode dans api.js
-      fetchData(); // Rafraîchissez la liste des utilisateurs après ajout
+      await api.createAppUser(newUser);
+      fetchData();
       handleCloseModal();
     } catch (error) {
       console.error('Erreur lors de la création de l\'utilisateur:', error);
